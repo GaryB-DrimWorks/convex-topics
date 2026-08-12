@@ -44,7 +44,7 @@ npm run build
 ```ts
 // <app>/convex/convex.config.ts
 import { defineApp } from "convex/server";
-import topics from "@drimworks/convex-topics/convex.config.js";
+import topics from "convex-topics/convex.config.js";
 
 const app = defineApp();
 app.use(topics, {}); // the {} is required — see below

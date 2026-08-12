@@ -1,5 +1,5 @@
 {
-  "name": "@drimworks/convex-topics",
+  "name": "convex-topics",
   "description": "Hierarchical, searchable topic trees as a Convex component. Workspace-scoped and auth-agnostic.",
   "version": "0.1.0",
   "license": "MIT",
@@ -22,7 +22,11 @@
     "search"
   ],
   "type": "module",
-  "files": ["dist", "src", "SETUP.md"],
+  "files": [
+    "dist",
+    "src",
+    "SETUP.md"
+  ],
   "exports": {
     ".": {
       "types": "./dist/client/index.d.ts",
@@ -32,9 +36,6 @@
       "types": "./dist/component/convex.config.d.ts",
       "default": "./dist/component/convex.config.js"
     }
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "scripts": {
     "build": "tsc --project tsconfig.build.json",

@@ -1,4 +1,4 @@
-# @drimworks/convex-topics
+# convex-topics
 
 Hierarchical, searchable topic trees as a [Convex component](https://docs.convex.dev/components).
 Workspace-scoped and auth-agnostic, so the same content engine can back several
@@ -72,7 +72,7 @@ here; policy stays in the app.
 ## Installing
 
 ```bash
-npm install @drimworks/convex-topics
+npm install convex-topics
 ```
 
 For local development against a sibling checkout, use `--install-links` — a
@@ -93,7 +93,7 @@ npm install --install-links file:../convex-topics
 ```ts
 // convex/convex.config.ts
 import { defineApp } from "convex/server";
-import topics from "@drimworks/convex-topics/convex.config.js";
+import topics from "convex-topics/convex.config.js";
 
 const app = defineApp();
 app.use(topics);
@@ -151,18 +151,19 @@ npx convex codegen --component-dir ../convex-topics/src/component
 Then publish:
 
 ```bash
-npm publish        # publishConfig.access is already "public"
+npm login
+npm publish
 ```
 
-The scope requires an npm organisation named `drimworks`, and `npm login`.
-Without the org, either create it or drop the scope from `name`.
+The name is unscoped, so no npm organisation is needed and `publishConfig` is
+unnecessary — unscoped packages are public by default.
 
 ## Client helpers
 
 The package root exports UI-side utilities that need no database round trip:
 
 ```ts
-import { buildTopicTree, slugifyTitle } from "@drimworks/convex-topics";
+import { buildTopicTree, slugifyTitle } from "convex-topics";
 
 const tree = buildTopicTree(await convex.query(api.topics.listAll, { workspaceId }));
 ```

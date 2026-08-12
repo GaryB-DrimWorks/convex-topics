@@ -1,5 +1,5 @@
 /**
- * App-facing helpers for @drimworks/convex-topics.
+ * App-facing helpers for convex-topics.
  *
  * The component's functions are reached through `components.topics.lib.*` in
  * the host app. These types exist so app code can talk about topics without
