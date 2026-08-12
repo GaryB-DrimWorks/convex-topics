@@ -1,10 +1,28 @@
 {
   "name": "@drimworks/convex-topics",
-  "description": "Hierarchical, searchable topic trees as a Convex component. Workspace-scoped, auth-agnostic.",
+  "description": "Hierarchical, searchable topic trees as a Convex component. Workspace-scoped and auth-agnostic.",
   "version": "0.1.0",
   "license": "MIT",
+  "author": "Gary Bartlett <gary.bartlett@drim.works>",
+  "homepage": "https://github.com/GaryB-DrimWorks/convex-topics#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GaryB-DrimWorks/convex-topics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GaryB-DrimWorks/convex-topics/issues"
+  },
+  "keywords": [
+    "convex",
+    "convex-component",
+    "topics",
+    "tree",
+    "taxonomy",
+    "knowledge-base",
+    "search"
+  ],
   "type": "module",
-  "files": ["dist", "src"],
+  "files": ["dist", "src", "SETUP.md"],
   "exports": {
     ".": {
       "types": "./dist/client/index.d.ts",
@@ -15,12 +33,16 @@
       "default": "./dist/component/convex.config.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
     "dev": "tsc --project tsconfig.build.json --watch",
     "codegen": "convex codegen --component-dir ./src/component",
     "clean": "rimraf dist",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepack": "npm run clean && npm run build"
   },
   "peerDependencies": {
     "convex": ">=1.31.0"
@@ -29,5 +51,8 @@
     "convex": "^1.31.2",
     "rimraf": "^6.0.1",
     "typescript": "~5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

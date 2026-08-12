@@ -1,6 +1,9 @@
 node_modules/
 dist/
-_generated/
 *.log
 .env
 .env.local
+
+# src/component/_generated is deliberately NOT ignored. Convex codegen needs a
+# linked deployment to run, so committing its output is what lets the package
+# build (and publish) from a clean checkout without one.

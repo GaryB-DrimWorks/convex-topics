@@ -73,9 +73,22 @@ here; policy stays in the app.
 
 ```bash
 npm install @drimworks/convex-topics
-# or, during development:
-npm install file:../convex-topics
 ```
+
+For local development against a sibling checkout, use `--install-links` — a
+plain `file:` install symlinks this directory including its own
+`node_modules/convex`, and TypeScript then sees two unrelated copies of every
+Convex type:
+
+```bash
+npm install --install-links file:../convex-topics
+```
+
+> **`bun install` does not work with a local `file:` link.** Bun has no
+> `--install-links` equivalent, so the duplicate `convex` is unavoidable and the
+> build fails with *"Two different types with this name exist, but they are
+> unrelated."* Installing this package from a registry has no such problem —
+> that is the main reason to publish it rather than link it.
 
 ```ts
 // convex/convex.config.ts
@@ -119,6 +132,30 @@ cd ../convex-topics && npm run build
 
 Full sequence, including the `--install-links` requirement, is in
 [SETUP.md](./SETUP.md).
+
+## Publishing
+
+`prepack` runs `clean && build`, so `npm pack` and `npm publish` always ship a
+freshly compiled `dist/`.
+
+`src/component/_generated/` is committed on purpose. Convex codegen needs a
+linked deployment to run, so without it the package could not be built from a
+clean checkout or in CI. Regenerate it from a linked app whenever the schema or
+function signatures change:
+
+```bash
+cd ../<app>
+npx convex codegen --component-dir ../convex-topics/src/component
+```
+
+Then publish:
+
+```bash
+npm publish        # publishConfig.access is already "public"
+```
+
+The scope requires an npm organisation named `drimworks`, and `npm login`.
+Without the org, either create it or drop the scope from `name`.
 
 ## Client helpers
 
