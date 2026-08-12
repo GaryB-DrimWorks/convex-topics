@@ -155,8 +155,27 @@ const jwks = JSON.stringify({ keys: [{ use: "sig", ...(await exportJWK(keys.publ
 
 Then sign up with any `@test.local` address — `SignIn.tsx` and `SignUp.tsx`
 route those to the test provider automatically, bypassing email verification.
-Real addresses send OTP codes through Resend, which needs `RESEND_API_KEY` and
-optionally `RESEND_FROM_ADDRESS`.
+
+Real addresses send OTP codes through Resend:
+
+```bash
+npx convex env set RESEND_API_KEY re_...
+npx convex env set RESEND_FROM_ADDRESS noreply@your-verified-domain
+```
+
+Both belong on the **Convex deployment**, not in `.env.local` — the email code
+runs inside Convex and never reads local files. Without
+`RESEND_FROM_ADDRESS` the sender falls back to `onboarding@resend.dev`, which
+Resend only permits sending to the account owner's own address, so real users
+would silently receive nothing.
+
+Verified working on `online-help`: both the signup verification and the
+password reset emails were delivered.
+
+> **Email verification is not enforced.** `signUp` returns valid tokens and
+> leaves `emailVerificationTime` unset, so an unverified account has full
+> access even though `Password({ verify: ... })` is configured. Decide whether
+> that is wanted before opening signups to real users.
 
 > `ENABLE_TEST_AUTH=true` enables a credentials backdoor. It is gated to
 > `@test.local` addresses and belongs on dev deployments only — never
