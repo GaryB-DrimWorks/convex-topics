@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '03:00'
+    open-pull-requests-limit: 5
+    reviewers:
+      - 'GaryB-DrimWorks'
+    labels:
+      - 'dependencies'
+      - 'npm'
+    allow:
+      - dependency-type: 'production'
+      - dependency-type: 'development'
+    ignore:
+      # Ignore major version updates for stability
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
