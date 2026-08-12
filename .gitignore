@@ -1,0 +1,6 @@
+node_modules/
+dist/
+_generated/
+*.log
+.env
+.env.local
