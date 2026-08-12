@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test & Lint
+    name: Typecheck & Build
 
     strategy:
       matrix:
@@ -32,6 +32,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Clean build artifacts
-        run: npm run clean
