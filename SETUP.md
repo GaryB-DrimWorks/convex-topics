@@ -115,9 +115,21 @@ Exercised against a seeded 15-topic demo workspace:
 workspace's 17 and the personal workspace's 0 were untouched. The cascade is
 correctly scoped.
 
-**Still unexercised:** `countAll`, reachable only from the admin dashboard,
-which requires a superadmin account. It is a plain `collect().length` over the
-same table `countByWorkspaces` already queries, so risk is low.
+`countAll` verified from the admin dashboard, which reported 17 topics —
+matching the CLI count exactly. Every function in the API has now been
+exercised against a live deployment.
+
+### Reaching the admin dashboard
+
+The dashboard is gated by `role === "superadmin"` in `userProfiles`, and the
+only mutation that sets a role (`admin.ts` `setUserRole`) itself calls
+`requireSuperAdmin`. **There is no bootstrap**, so the first superadmin has to
+be created by editing the row directly in the Convex dashboard under
+Data → `userProfiles`. `npx convex run` cannot substitute: the CLI carries no
+user identity, so `getAuthUserId` returns null and the gate throws.
+
+Worth fixing before any production deploy, or the same manual database edit
+will be needed there.
 
 ## Auth on a fresh dev deployment
 
