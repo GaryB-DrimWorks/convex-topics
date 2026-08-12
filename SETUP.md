@@ -137,7 +137,7 @@ A newly created deployment has no environment variables, so sign-in and
 password reset both fail. Minimum to get a working login:
 
 ```bash
-npx convex env set VIKTOR_SPACES_IS_PREVIEW true   # enables @test.local provider
+npx convex env set ENABLE_TEST_AUTH true           # enables @test.local provider
 npx convex env set JWT_PRIVATE_KEY -- "<PKCS#8 PEM, newlines as spaces>"
 npx convex env set JWKS -- '<{"keys":[…]} JSON>'
 npx convex env set SITE_URL -- "http://localhost:5176"
@@ -155,9 +155,9 @@ const jwks = JSON.stringify({ keys: [{ use: "sig", ...(await exportJWK(keys.publ
 
 Then sign up with any `@test.local` address — `SignIn.tsx` and `SignUp.tsx`
 route those to the test provider automatically, bypassing email verification.
-Real addresses need `VIKTOR_SPACES_API_URL` / `_PROJECT_NAME` / `_PROJECT_SECRET`
-for the email service.
+Real addresses send OTP codes through Resend, which needs `RESEND_API_KEY` and
+optionally `RESEND_FROM_ADDRESS`.
 
-> `VIKTOR_SPACES_IS_PREVIEW=true` enables a credentials backdoor. It is gated to
-> `@test.local` addresses and belongs on dev/preview deployments only — never
+> `ENABLE_TEST_AUTH=true` enables a credentials backdoor. It is gated to
+> `@test.local` addresses and belongs on dev deployments only — never
 > production.
