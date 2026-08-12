@@ -21,8 +21,11 @@ Full tree manipulation (`addChild`, `promote`, `demote`, `rename`, `duplicate`,
 `remove`) verified via CLI against a seeded 15-topic workspace. See
 [SETUP.md](./SETUP.md).
 
-Two functions remain unexercised: `removeByWorkspace` and `countAll`, both
-reachable only through authenticated flows (org deletion, admin dashboard).
+`removeByWorkspace` verified through a real org deletion: the org's workspace
+went from 3 topics to 0 while every other workspace was left untouched.
+
+One function remains unexercised: `countAll`, reachable only from the admin
+dashboard, which needs a superadmin account.
 
 ## What it owns
 

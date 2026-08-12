@@ -110,6 +110,42 @@ Exercised against a seeded 15-topic demo workspace:
 | `remove` | count back to 15 |
 | `countByWorkspaces` | 15, agrees with `listAll` |
 
-**Not yet exercised:** `removeByWorkspace` and `countAll`. Both are reached only
-through org deletion and the admin dashboard, which need an authenticated
-session. Low risk (each is an indexed query plus a loop), but unproven.
+`removeByWorkspace` verified separately through a real org deletion in
+`online-help`: an org workspace holding 3 topics went to 0, while the demo
+workspace's 17 and the personal workspace's 0 were untouched. The cascade is
+correctly scoped.
+
+**Still unexercised:** `countAll`, reachable only from the admin dashboard,
+which requires a superadmin account. It is a plain `collect().length` over the
+same table `countByWorkspaces` already queries, so risk is low.
+
+## Auth on a fresh dev deployment
+
+A newly created deployment has no environment variables, so sign-in and
+password reset both fail. Minimum to get a working login:
+
+```bash
+npx convex env set VIKTOR_SPACES_IS_PREVIEW true   # enables @test.local provider
+npx convex env set JWT_PRIVATE_KEY -- "<PKCS#8 PEM, newlines as spaces>"
+npx convex env set JWKS -- '<{"keys":[…]} JSON>'
+npx convex env set SITE_URL -- "http://localhost:5176"
+npx convex dev --once                               # redeploy to pick them up
+```
+
+Generate the keypair with `jose` (already a transitive dependency):
+
+```js
+const { generateKeyPair, exportPKCS8, exportJWK } = require("jose");
+const keys = await generateKeyPair("RS256", { extractable: true });
+const privateKey = (await exportPKCS8(keys.privateKey)).trimEnd().replace(/\n/g, " ");
+const jwks = JSON.stringify({ keys: [{ use: "sig", ...(await exportJWK(keys.publicKey)) }] });
+```
+
+Then sign up with any `@test.local` address — `SignIn.tsx` and `SignUp.tsx`
+route those to the test provider automatically, bypassing email verification.
+Real addresses need `VIKTOR_SPACES_API_URL` / `_PROJECT_NAME` / `_PROJECT_SECRET`
+for the email service.
+
+> `VIKTOR_SPACES_IS_PREVIEW=true` enables a credentials backdoor. It is gated to
+> `@test.local` addresses and belongs on dev/preview deployments only — never
+> production.
